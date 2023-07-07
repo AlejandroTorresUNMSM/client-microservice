@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class ClientRequest {
+public class ClientPost {
     @NotBlank
     private String typeDocument;
     @NotBlank
