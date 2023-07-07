@@ -1,4 +1,4 @@
-package com.atorres.nttdata.client.infraestructure.repository.dto;
+package com.atorres.nttdata.client.model.dao;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -11,7 +11,7 @@ public class ClientDao {
     @Id
     private String id;
     private String typeDocument;
-    private String nroDocumento;
+    private String nroDocument;
     private String name;
 
 }

@@ -1,4 +1,4 @@
-package com.atorres.nttdata.client.infraestructure.rest.dto;
+package com.atorres.nttdata.client.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
