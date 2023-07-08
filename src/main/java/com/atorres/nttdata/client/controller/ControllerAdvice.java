@@ -26,7 +26,7 @@ public class ControllerAdvice {
                 .httpStatus(ex.getStatus())
                 .message(ex.getMessage())
                 .build();
-        return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error,ex.getStatus());
     }
 
 }

@@ -13,5 +13,6 @@ public class ClientDao {
     private String typeDocument;
     private String nroDocument;
     private String name;
+    private String typeClient;
 
 }

@@ -24,7 +24,7 @@ public class ClientController {
     private ClientService clientService;
 
     @GetMapping
-    public Flux<ClientDao> getList(){
+    public Flux<ClientDao> getListClients(){
         return clientService.findAll();
     }
     public Mono<ResponseEntity<Flux<ClientDao>>> lista(){
@@ -36,7 +36,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public Mono<ResponseEntity<ClientDao>> crear(@Valid @RequestBody Mono<ClientPost> clientMono) {
+    public Mono<ResponseEntity<ClientDao>> createClient(@Valid @RequestBody Mono<ClientPost> clientMono) {
         return clientMono.flatMap(client -> {
                     return clientService.save(client).map(p -> {
                         log.info("Cliente creado con éxito");
@@ -45,26 +45,27 @@ public class ClientController {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .body(p);
                     });
-                })
-                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.CONFLICT, "El número de documento ya existe")))
-                .onErrorResume(t -> {
-                    log.error("Fallo en crear el cliente");
-                    return Mono.error(t);
                 });
     }
 
 
     @GetMapping("/{id}")
-    public Mono<ResponseEntity<ClientDao>> ver(@PathVariable String id){
+    public Mono<ResponseEntity<ClientDao>> getClient(@PathVariable String id){
         return clientService.findById(id).map(p -> ResponseEntity.ok()
                         .contentType(MediaType.APPLICATION_JSON)
-                        .body(p))
-                .defaultIfEmpty(ResponseEntity.notFound().build());
+                        .body(p));
+    }
+
+    @PutMapping("/update/{id}")
+    public Mono<ResponseEntity<ClientDao>> updateClient(@PathVariable String id, @RequestBody ClientPost clientPost){
+        return clientService.update(id,clientPost).map(p->ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(p));
     }
 
 
     @DeleteMapping("/{id}")
-    public Mono<Void> delete(@PathVariable String id){
-        return clientService.findById(id).flatMap(p ->clientService.delete(p));
+    public Mono<Void> deleteClient(@PathVariable String id){
+        return clientService.delete(id);
     }
 }

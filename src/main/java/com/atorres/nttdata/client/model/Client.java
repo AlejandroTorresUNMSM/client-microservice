@@ -10,4 +10,5 @@ public class Client {
     private String typeDocument;
     private String nroDocumento;
     private String name;
+    private String typeClient;
 }

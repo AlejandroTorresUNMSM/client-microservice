@@ -11,5 +11,7 @@ public class ClientPost {
     private String nroDocument;
     @NotBlank
     private String name;
+    @NotBlank
+    private String typeClient;
 
 }
