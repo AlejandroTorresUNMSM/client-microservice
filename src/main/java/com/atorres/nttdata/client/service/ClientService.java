@@ -25,9 +25,11 @@ public class ClientService {
     }
 
     public Mono<ClientDao> save(ClientPost client) {
-        return dao.findByNroDocument(client.getNroDocument())
-                .switchIfEmpty(dao.insert(clientMapper.clientRequesttoClientDao(client)));
+        Mono<Boolean> existeClient = dao.findByNroDocument(client.getNroDocument()).hasElement();
 
+        //return dao.findByNroDocument(client.getNroDocument()).switchIfEmpty(dao.insert(clientMapper.clientRequesttoClientDao(client)));
+        return existeClient.flatMap(exist -> exist ? Mono.error(new Exception("El client existe"))
+                : dao.save(clientMapper.clientRequesttoClientDao(client)));
     }
 
     public Mono<Void> delete(ClientDao clientDao) {
