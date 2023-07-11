@@ -13,47 +13,89 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class ClientService {
+    /**.
+     * Repositorio para cliente
+     */
     @Autowired
     private ClientRepository dao;
+    /**.
+     * Mapper Cliente
+     */
     @Autowired
     private ClientMapper clientMapper;
 
+    /**.
+     * Metodo que encuentra todos los clientes
+     * @return lista de clientes
+     */
     public Flux<ClientDao> findAll() {
         return dao.findAll();
     }
 
-    public Mono<ClientDao> findById(String id) {
+    /**.
+     * Metodo que trae un cliente por su Id
+     * @param id id del cliente
+     * @return clientDao
+     */
+    public  Mono<ClientDao> findById(final String id) {
         //obtengo el cliente por id si no lo encuentra devuelve una excepcion
         return dao.findById(id)
-                .switchIfEmpty(Mono.error(new CustomException(HttpStatus.NOT_FOUND,"No se encontro al cliente")));
+                .switchIfEmpty(Mono
+                        .error(new CustomException(HttpStatus.NOT_FOUND,
+                        "No se encontro al cliente")));
     }
 
-    public Mono<ClientDao> save(ClientPost client) {
+    /**.
+     * Metodo para crear un cliente
+     * @param client cliente request
+     * @return clienteDao
+     */
+    public Mono<ClientDao> save(final ClientPost client) {
         //reviso si existe un cliente con un nroDocumento
-        Mono<Boolean> existeClient = dao.findByNroDocument(client.getNroDocument()).hasElement();
+        Mono<Boolean> existeClient = dao
+                .findByNroDocument(client.getNroDocument()).hasElement();
         //si existe un cliente con el nroDocumento lanzo una excepcion
-        return existeClient.flatMap(exist -> exist ? Mono.error(new CustomException(HttpStatus.BAD_REQUEST,"El numero de documento ya esta en uso"))
+        return existeClient.flatMap(exist -> exist
+                ? Mono.error(new CustomException(HttpStatus.BAD_REQUEST,
+                "El numero de documento ya esta en uso"))
                 : dao.save(clientMapper.clientposttoClientDao(client)));
     }
 
-    public Mono<Void> delete(String id) {
+    /**.
+     * Metodo para borrar un cliente
+     * @param id id del cliente
+     * @return Vacio
+     */
+    public Mono<Void> delete(final String id) {
         //reviso que el cliente exista
         Mono<Boolean> existeClient = dao.findById(id).hasElement();
         //reviso el flag del client si no existe lanzo un mensaje de error
-        return existeClient.flatMap(exists -> exists ? dao.deleteById(id) : Mono.error(new CustomException(HttpStatus.NOT_FOUND, "No existe el cliente a eliminar")));
+        return existeClient.flatMap(exists -> exists ? dao.deleteById(id)
+                : Mono.error(new CustomException(HttpStatus.NOT_FOUND,
+                "No existe el cliente a eliminar")));
     }
 
-    public Mono<ClientDao> update(String id ,ClientPost clientPost){
-        //reviso que el cliente exista y ademas que coincida con el nroDocumento y el typeDocument
-        //ahorita lo unico que se podria modificar seria el name y el type
+    /**.
+     * Metodo para actualizar cliente
+     * @param id id del cliente
+     * @param clientPost request del cliente
+     * @return ClienteDao
+     */
+    public Mono<ClientDao> update(final String id,
+                                  final ClientPost clientPost) {
+        //Filtramos los clientes por el documento
         Mono<Boolean> existeClient = dao.findById(id)
-                .filter(cl -> cl.getTypeDocument().equals(clientPost.getTypeDocument()))
-                .filter(cl -> cl.getNroDocument().equals(clientPost.getNroDocument()))
+                .filter(cl -> cl.getTypeDocument()
+                        .equals(clientPost.getTypeDocument()))
+                .filter(cl -> cl.getNroDocument()
+                        .equals(clientPost.getNroDocument()))
                 .hasElement();
         //reviso el flag si existe el cliente  sino lanzo un mensaje de error
         return existeClient
-                .flatMap(exists -> exists ?
-                dao.save(clientMapper.clientposttoClientDao(clientPost,id)) :
-                Mono.error(new CustomException(HttpStatus.NOT_FOUND, "No existe el cliente o el nrodocumento no es el correcto")));
+                .flatMap(exists -> exists
+                        ? dao.save(clientMapper
+                        .clientposttoClientDao(clientPost, id))
+                        : Mono.error(new CustomException(HttpStatus.NOT_FOUND,
+                        "Error al guardar el cliente")));
     }
 }

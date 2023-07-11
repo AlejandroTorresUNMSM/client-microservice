@@ -16,7 +16,7 @@ public class ClientMapper {
         return clientDao;
     }
 
-    public ClientDao clientposttoClientDao(ClientPost clientPost,String id){
+    public ClientDao clientposttoClientDao(final ClientPost clientPost, final String id){
         ClientDao clientDao = new ClientDao();
         clientDao.setId(id);
         clientDao.setName(clientPost.getName());
