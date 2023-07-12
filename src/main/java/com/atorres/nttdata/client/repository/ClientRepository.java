@@ -5,7 +5,6 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
-@SuppressWarnings("checkstyle:LineLength")
 @Repository
 public interface ClientRepository extends ReactiveMongoRepository
         <ClientDao, String> {

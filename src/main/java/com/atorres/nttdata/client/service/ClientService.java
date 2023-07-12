@@ -94,7 +94,7 @@ public class ClientService {
         return existeClient
                 .flatMap(exists -> exists
                         ? dao.save(clientMapper
-                        .clientposttoClientDao(clientPost, id))
+                        .clientposttoClientDaoUpdate(clientPost, id))
                         : Mono.error(new CustomException(HttpStatus.NOT_FOUND,
                         "Error al guardar el cliente")));
     }

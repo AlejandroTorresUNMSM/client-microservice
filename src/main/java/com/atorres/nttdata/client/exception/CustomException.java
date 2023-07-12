@@ -1,18 +1,27 @@
 package com.atorres.nttdata.client.exception;
 
-import lombok.Data;
 import org.springframework.http.HttpStatus;
 
-@Data
-public class CustomException extends RuntimeException{
+public class CustomException extends RuntimeException {
+    /**.
+     * HttpStatus de la excepcion
+     */
+    private final HttpStatus status;
 
-    private HttpStatus status;
-
-    public CustomException(HttpStatus status, String message) {
+    /**.
+     * Constructor CunstomException
+     * @param httpStatus httpstatus
+     * @param message mensaje de la excepcion
+     */
+    public CustomException(final HttpStatus httpStatus, final String message) {
         super(message);
-        this.status = status;
+        this.status = httpStatus;
     }
 
+    /**.
+     * Metodo que devuelve el status de la excepcion
+     * @return httpstatus
+     */
     public HttpStatus getStatus() {
         return status;
     }

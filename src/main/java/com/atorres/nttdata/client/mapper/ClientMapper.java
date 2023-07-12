@@ -6,7 +6,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ClientMapper {
-    public ClientDao clientposttoClientDao(ClientPost clientPost){
+    /**.
+     * Metodo que transforma Clientepost a ClienteDao
+     * @param clientPost clientepost
+     * @return clientdao
+     */
+    public ClientDao clientposttoClientDao(final ClientPost clientPost) {
         ClientDao clientDao = new ClientDao();
         clientDao.setId(generateId());
         clientDao.setName(clientPost.getName());
@@ -16,7 +21,14 @@ public class ClientMapper {
         return clientDao;
     }
 
-    public ClientDao clientposttoClientDao(final ClientPost clientPost, final String id){
+    /**.
+     * Metodo usado en el Update para actulizar el Client
+     * @param clientPost clientpost
+     * @param id idcliente
+     * @return client
+     */
+    public ClientDao clientposttoClientDaoUpdate(final ClientPost clientPost,
+                                                 final String id) {
         ClientDao clientDao = new ClientDao();
         clientDao.setId(id);
         clientDao.setName(clientPost.getName());
@@ -26,7 +38,11 @@ public class ClientMapper {
         return clientDao;
     }
 
-    private String generateId(){
-        return java.util.UUID.randomUUID().toString().replaceAll("-","");
+    /**.
+     * Metodo para generar un Id aleatorio
+     * @return id aleatorio
+     */
+    private String generateId() {
+        return java.util.UUID.randomUUID().toString().replaceAll("-", "");
     }
 }
