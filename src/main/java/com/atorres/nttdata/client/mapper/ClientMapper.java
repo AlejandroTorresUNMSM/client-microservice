@@ -1,6 +1,7 @@
 package com.atorres.nttdata.client.mapper;
 
 import com.atorres.nttdata.client.model.ClientPost;
+import com.atorres.nttdata.client.model.RequestClientUpdate;
 import com.atorres.nttdata.client.model.dao.ClientDao;
 import org.springframework.stereotype.Component;
 
@@ -23,18 +24,16 @@ public class ClientMapper {
 
     /**.
      * Metodo usado en el Update para actulizar el Client
-     * @param clientPost clientpost
-     * @param id idcliente
+     * @param clientDao clientpost
+     * @param request idcliente
      * @return client
      */
-    public ClientDao clientposttoClientDaoUpdate(final ClientPost clientPost,
-                                                 final String id) {
-        ClientDao clientDao = new ClientDao();
-        clientDao.setId(id);
-        clientDao.setName(clientPost.getName());
-        clientDao.setTypeDocument(clientPost.getTypeDocument());
-        clientDao.setNroDocument(clientPost.getNroDocument());
-        clientDao.setTypeClient(clientPost.getTypeClient());
+    public ClientDao clientposttoClientDaoUpdate(
+            final ClientDao clientDao,
+            final RequestClientUpdate  request) {
+        clientDao.setName(request.getName());
+        clientDao.setTypeDocument(request.getTypeDocument());
+        clientDao.setNroDocument(request.getNroDocument());
         return clientDao;
     }
 

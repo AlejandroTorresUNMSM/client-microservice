@@ -1,5 +1,6 @@
 package com.atorres.nttdata.client.controller;
 
+import com.atorres.nttdata.client.model.RequestClientUpdate;
 import com.atorres.nttdata.client.service.ClientService;
 import com.atorres.nttdata.client.model.dao.ClientDao;
 import com.atorres.nttdata.client.model.ClientPost;
@@ -38,7 +39,8 @@ public class ClientController {
   @GetMapping(value = "/",
           produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Flux<ClientDao> getListClients() {
-    return clientService.findAll();
+    return clientService.findAll()
+            .doOnNext(cl -> log.info("Cliente encontrado: {}", cl));
   }
 
   /**
@@ -53,7 +55,8 @@ public class ClientController {
   public Mono<ClientDao> createClient(
           @Valid @RequestBody
           final Mono<ClientPost> cp) {
-    return cp.flatMap(client -> clientService.save(client));
+    return cp.flatMap(client -> clientService.save(client))
+            .doOnSuccess(v -> log.error("Cliente creado con exito"));
   }
 
   /**
@@ -67,7 +70,8 @@ public class ClientController {
           produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Mono<ClientDao> getClient(
           @PathVariable final String id) {
-    return clientService.findById(id);
+    return clientService.findById(id)
+            .doOnSuccess(v -> log.error("Cliente encontrado con exito"));
   }
 
   /**
@@ -82,8 +86,9 @@ public class ClientController {
           produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Mono<ClientDao> updateClient(
           @PathVariable final String id,
-          @RequestBody final ClientPost cp) {
-    return clientService.update(id, cp);
+          @RequestBody final RequestClientUpdate cp) {
+    return clientService.update(id, cp)
+            .doOnSuccess(v -> log.error("Cliente actualizado con exito"));
   }
 
   /**
@@ -97,6 +102,7 @@ public class ClientController {
           produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Mono<Void> deleteClient(
           @PathVariable final String id) {
-    return clientService.delete(id);
+    return clientService.delete(id)
+            .doOnSuccess(v -> log.error("Cliente eliminado con exito"));
   }
 }
