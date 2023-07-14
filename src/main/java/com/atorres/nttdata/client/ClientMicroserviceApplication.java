@@ -2,7 +2,7 @@ package com.atorres.nttdata.client;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
-public final class ClientMicroserviceApplication {
+public class ClientMicroserviceApplication {
   /**.
    * Funcion principal
    * @param args arg
@@ -11,8 +11,4 @@ public final class ClientMicroserviceApplication {
     SpringApplication.run(ClientMicroserviceApplication.class,
             args);
   }
-  /**.
-   * Constructor privado
-   */
-  private ClientMicroserviceApplication() { }
 }

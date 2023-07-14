@@ -5,6 +5,7 @@ import com.atorres.nttdata.client.model.dao.ClientDao;
 import com.atorres.nttdata.client.model.ClientPost;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +35,8 @@ public class ClientController {
    *
    * @return lista clientDao
    */
-  @GetMapping
+  @GetMapping(value = "/",
+          produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Flux<ClientDao> getListClients() {
     return clientService.findAll();
   }
@@ -46,7 +48,8 @@ public class ClientController {
    * @param cp cliente request
    * @return cliente
    */
-  @PostMapping
+  @PostMapping(value = "/",
+          produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Mono<ClientDao> createClient(
           @Valid @RequestBody
           final Mono<ClientPost> cp) {
@@ -60,7 +63,8 @@ public class ClientController {
    * @param id id del cliente
    * @return cliente
    */
-  @GetMapping("/{id}")
+  @GetMapping(value = "/{id}",
+          produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Mono<ClientDao> getClient(
           @PathVariable final String id) {
     return clientService.findById(id);
@@ -74,7 +78,8 @@ public class ClientController {
    * @param cp cliente request
    * @return cliente
    */
-  @PutMapping("/update/{id}")
+  @PutMapping(value = "/update/{id}",
+          produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Mono<ClientDao> updateClient(
           @PathVariable final String id,
           @RequestBody final ClientPost cp) {
@@ -88,7 +93,8 @@ public class ClientController {
    * @param id id cliente
    * @return void
    */
-  @DeleteMapping("/{id}")
+  @DeleteMapping(value = "/{id}",
+          produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Mono<Void> deleteClient(
           @PathVariable final String id) {
     return clientService.delete(id);
