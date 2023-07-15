@@ -56,7 +56,7 @@ public class ClientController {
           @Valid @RequestBody
           final Mono<ClientPost> cp) {
     return cp.flatMap(client -> clientService.save(client))
-            .doOnSuccess(v -> log.error("Cliente creado con exito"));
+            .doOnSuccess(v -> log.info("Cliente creado con exito"));
   }
 
   /**
@@ -71,7 +71,7 @@ public class ClientController {
   public Mono<ClientDao> getClient(
           @PathVariable final String id) {
     return clientService.findById(id)
-            .doOnSuccess(v -> log.error("Cliente encontrado con exito"));
+            .doOnSuccess(v -> log.info("Cliente encontrado con exito"));
   }
 
   /**
@@ -88,7 +88,7 @@ public class ClientController {
           @PathVariable final String id,
           @RequestBody final RequestClientUpdate cp) {
     return clientService.update(id, cp)
-            .doOnSuccess(v -> log.error("Cliente actualizado con exito"));
+            .doOnSuccess(v -> log.info("Cliente actualizado con exito"));
   }
 
   /**
@@ -103,6 +103,6 @@ public class ClientController {
   public Mono<Void> deleteClient(
           @PathVariable final String id) {
     return clientService.delete(id)
-            .doOnSuccess(v -> log.error("Cliente eliminado con exito"));
+            .doOnSuccess(v -> log.info("Cliente eliminado con exito"));
   }
 }
