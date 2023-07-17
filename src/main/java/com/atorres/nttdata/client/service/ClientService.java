@@ -64,7 +64,7 @@ public class ClientService {
                         || !Objects
                         .equals(cl.getNroDocument(), client.getNroDocument()))
                 .any(cl -> true)
-                .flatMap(exist -> !exist
+                .flatMap(exist -> Boolean.FALSE.equals(exist)
                         ? Mono.error(new CustomException(HttpStatus.BAD_REQUEST,
                                 "Ya existe el nroDocumento y tipo"))
                         : dao.save(clientMapper.clientposttoClientDao(client)));
@@ -79,9 +79,11 @@ public class ClientService {
         //reviso que el cliente exista
         Mono<Boolean> existeClient = dao.findById(id).hasElement();
         //reviso el flag del client si no existe lanzo un mensaje de error
-        return existeClient.flatMap(exists -> exists ? dao.deleteById(id)
-                : Mono.error(new CustomException(HttpStatus.NOT_FOUND,
-                "No existe el cliente a eliminar")));
+        return existeClient
+                .flatMap(exists -> Boolean.TRUE.equals(exists)
+                        ? dao.deleteById(id)
+                        : Mono.error(new CustomException(HttpStatus.NOT_FOUND,
+                        "No existe el cliente a eliminar")));
     }
 
     /**.
