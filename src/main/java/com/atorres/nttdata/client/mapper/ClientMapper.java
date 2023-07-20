@@ -42,6 +42,6 @@ public class ClientMapper {
      * @return id aleatorio
      */
     private String generateId() {
-        return java.util.UUID.randomUUID().toString().replaceAll("-", "");
+        return java.util.UUID.randomUUID().toString().replace("-", "");
     }
 }
